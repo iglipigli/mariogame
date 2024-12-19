@@ -3,23 +3,23 @@ package org.example;
 import java.awt.*;
 
 public class Goomba {
-    private float x, y; // Goomba's position
-    private float speed = 2f; // Speed of movement
-    private int width = 50, height = 50; // Size of the Goomba
-    private int direction = 1; // 1 for right, -1 for left
-    private Rectangle platform; // Reference to the platform
+    private float x, y;
+    private float speed = 2f;
+    private int width = 50, height = 50;
+    private int direction = 1; // 1 prawo, -1 lewo
+    private Rectangle platform;
 
     public Goomba(Rectangle platform) {
         this.platform = platform;
-        this.x = platform.x; // Start at the left edge of the platform
-        this.y = platform.y - height; // Position just above the platform
+        this.x = platform.x; // Zaczyna na lewej krawędzi
+        this.y = platform.y - height; // w pozycji y ciut wiekszą od platformy
     }
 
     public void update() {
-        // Move the Goomba in the current direction
+        // Ruch goomby w kierunku ustawionym przez direction
         x += speed * direction;
 
-        // Reverse direction when reaching the platform's edges
+        // Odwracamy kierunek gdy dojdzie do krawędzi platformy
         if (x <= platform.x || x + width >= platform.x + platform.width) {
             direction *= -1;
         }

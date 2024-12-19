@@ -36,7 +36,7 @@ public class Mushroom {
 
     private void respawn() {
         try {
-            Thread.sleep(3000); // Wait 3 seconds before respawning
+            Thread.sleep(3000);
             active = true;
         } catch (InterruptedException e) {
             e.printStackTrace();

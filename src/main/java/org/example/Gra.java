@@ -86,18 +86,18 @@ public class Gra extends JPanel implements Runnable {
     }
 
     private synchronized void updateGame() {
-        // Update player controls
+        // zaktualizowanie informacji o sterowaniu gracza
         player.setControlInfo(leftPressed, rightPressed, jumping);
 
-        // Move player horizontally
+        // ruch poziomy
         if (leftPressed) player.position[0] -= playerSpeed;
         if (rightPressed) player.position[0] += playerSpeed;
 
-        // Apply gravity and vertical movement
+        // grawitacja i ruch pionowy
         player.playerYVelocity += gravity;
         player.position[1] += player.playerYVelocity;
 
-        // Collision with platform
+        // kolizje z platformą
         if (player.playerYVelocity > 0 &&
                 player.position[1] + 50 >= platform.y &&
                 player.position[0] + 50 > platform.x &&
@@ -107,23 +107,23 @@ public class Gra extends JPanel implements Runnable {
             jumping = false;
         }
 
-        // Collision with ground
+        // kolizja z platformą
         if (player.position[1] + 50 >= 600) {
             player.position[1] = 550;
             player.playerYVelocity = 0;
             jumping = false;
         }
 
-        // Update Goomba
+        // Aktualizacja stanu goomby
         goomba.update();
 
-        // Check collision with Goomba
+        // Sprawdź kolizje z goombą
         if (new Rectangle((int) player.position[0], (int) player.position[1], 50, 50)
                 .intersects(goomba.getBounds())) {
             System.exit(0); // Close the app
         }
 
-        // Check collision with left mushroom
+        // Kolizja z lewym grzybem
         if (leftMushroom.isActive() &&
                 new Rectangle((int) player.position[0], (int) player.position[1], 50, 50)
                         .intersects(leftMushroom.getBounds())) {
@@ -132,7 +132,7 @@ public class Gra extends JPanel implements Runnable {
             activateSpeedBoost();
         }
 
-        // Check collision with right mushroom
+        // Kolizja z prawym grzybem
         if (rightMushroom.isActive() &&
                 new Rectangle((int) player.position[0], (int) player.position[1], 50, 50)
                         .intersects(rightMushroom.getBounds())) {
@@ -145,46 +145,46 @@ public class Gra extends JPanel implements Runnable {
     }
 
     private void incrementScore() {
-        score++; // Increase the score by 1
+        score++;
     }
 
     private void activateSpeedBoost() {
         if (speedBoostActive) return;
 
         speedBoostActive = true;
-        playerSpeed = 10f; // Double the player's speed
+        playerSpeed = 10f; //podwajamy predkosc po grzybie
         new Timer().schedule(new TimerTask() {
             @Override
             public void run() {
                 speedBoostActive = false;
-                playerSpeed = 5f; // Reset speed
+                playerSpeed = 5f; // Resetujemy predkosc
             }
-        }, 1000); // Boost lasts for 1 second
+        }, 1000); // Boost trwa sekunde
     }
 
     @Override
     protected synchronized void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // Clear the background
+        // Rysujemy tło
         g.setColor(Color.WHITE);
         g.fillRect(0, 0, getWidth(), getHeight());
 
-        // Draw the player
+        // Rysujemy gracza
         g.drawImage(player.getCurrentSprite(), (int) player.position[0], (int) player.position[1], 50, 50, null);
 
-        // Draw the platform
+        // Rysujemy platforme
         g.setColor(Color.GREEN);
         g.fillRect(platform.x, platform.y, platform.width, platform.height);
 
-        // Draw the Goomba
+        // Rysujemy goombe
         goomba.draw(g);
 
-        // Draw the mushrooms
+        // Rysujemy grzybki
         leftMushroom.draw(g);
         rightMushroom.draw(g);
 
-        // Draw the score at the top of the screen
+        // Rysujemy wynik
         g.setColor(Color.BLACK);
         g.setFont(new Font("Arial", Font.BOLD, 20));
         g.drawString("Score: " + score, 10, 20);
